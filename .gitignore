@@ -1,7 +1,0 @@
-/.env
-/.venv
-/FetiiAI_Data_Austin.xlsx
-/model_download.py
-.gitignore
-.streamlit
-venv/
