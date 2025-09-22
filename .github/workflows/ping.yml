@@ -1,0 +1,15 @@
+name: Keep Streamlit Alive
+
+on:
+  schedule:
+    - cron: "0 */10 * * *"   # every 10 hours
+  workflow_dispatch:         # manual trigger too
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Curl Streamlit app
+        run: |
+          curl -s --max-time 30 https://your-app.streamlit.app/ || echo "App unreachable"
