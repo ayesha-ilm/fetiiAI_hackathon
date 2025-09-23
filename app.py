@@ -33,8 +33,20 @@ def cos_sim(a, b):
     return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
 
 # --- 3️⃣ Load DuckDB ---
-con = duckdb.connect("fetii.duckdb")
-venues = con.execute("SELECT * FROM venues").df()
+@st.cache_resource
+def get_connection():
+    # keep connection alive across reruns
+    return duckdb.connect("fetii.duckdb")
+
+@st.cache_data
+def load_venues(con):
+    return con.execute("SELECT * FROM venues").df()
+
+con = get_connection()
+venues = load_venues(con)
+
+# con = duckdb.connect("fetii.duckdb")
+# venues = con.execute("SELECT * FROM venues").df()
 
 # Compute min/max dates for context
 trip_dates = con.execute("SELECT MIN(\"Trip Date and Time\"), MAX(\"Trip Date and Time\") FROM trips").fetchall()[0]
